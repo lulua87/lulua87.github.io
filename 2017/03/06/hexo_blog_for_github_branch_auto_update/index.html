@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="hexo 是一个优秀的静态博客工具，唯一的不足就是源文件无法同步，让人几乎只能在一台电脑上写博客，为了解决这个问题，我们可以使用 Github 来管理我们的 hexo 源文件，具体思路就是：在我们博客的远程仓库中新建一个分支，用这个分支来存储博客的源文件，这样我们每次在更新博客并部署之后可以顺手多执行两条命令将源文件同步到远程分支中去，不需要做任何环境切换的操作，还可以将部署和同步操作写成一个命令">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hexo 博客利用 github 分支同步源文件">
+<meta property="og:url" content="http://example.com/2017/03/06/hexo_blog_for_github_branch_auto_update/index.html">
+<meta property="og:site_name" content="前端记录">
+<meta property="og:description" content="hexo 是一个优秀的静态博客工具，唯一的不足就是源文件无法同步，让人几乎只能在一台电脑上写博客，为了解决这个问题，我们可以使用 Github 来管理我们的 hexo 源文件，具体思路就是：在我们博客的远程仓库中新建一个分支，用这个分支来存储博客的源文件，这样我们每次在更新博客并部署之后可以顺手多执行两条命令将源文件同步到远程分支中去，不需要做任何环境切换的操作，还可以将部署和同步操作写成一个命令">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-03-06T06:00:00.000Z">
+<meta property="article:modified_time" content="2020-12-06T03:54:00.000Z">
+<meta property="article:author" content="Gao lu">
+<meta property="article:tag" content="hexo">
+<meta property="article:tag" content="github">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2017/03/06/hexo_blog_for_github_branch_auto_update/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>hexo 博客利用 github 分支同步源文件 | 前端记录</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">前端记录</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/03/06/hexo_blog_for_github_branch_auto_update/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Gao lu">
+      <meta itemprop="description" content="时间就像一张网，你撒在哪里，你的收获就在哪里。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="前端记录">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          hexo 博客利用 github 分支同步源文件
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-03-06 14:00:00" itemprop="dateCreated datePublished" datetime="2017-03-06T14:00:00+08:00">2017-03-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-12-06 11:54:00" itemprop="dateModified" datetime="2020-12-06T11:54:00+08:00">2020-12-06</time>
+              </span>
+
+          
+            <div class="post-description">hexo 是一个优秀的静态博客工具，唯一的不足就是源文件无法同步，让人几乎只能在一台电脑上写博客，为了解决这个问题，我们可以使用 Github 来管理我们的 hexo 源文件，具体思路就是：在我们博客的远程仓库中新建一个分支，用这个分支来存储博客的源文件，这样我们每次在更新博客并部署之后可以顺手多执行两条命令将源文件同步到远程分支中去，不需要做任何环境切换的操作，还可以将部署和同步操作写成一个命令脚本，自动执行以上命令。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><a target="_blank" rel="noopener" href="http://imweb.io/topic/5848d4259be501ba17b10a9a">原文转自imweb社区：</a></p>
+<hr>
+<p>hexo 是一个优秀的静态博客工具，唯一的不足就是源文件无法同步，让人几乎只能在一台电脑上写博客，为了解决这个问题，我们可以使用 Github 来管理我们的 hexo 源文件，具体思路就是：在我们博客的远程仓库中新建一个分支，用这个分支来存储博客的源文件，这样我们每次在更新博客并部署之后可以顺手多执行两条命令将源文件同步到远程分支中去，不需要做任何环境切换的操作，还可以将部署和同步操作写成一个命令脚本，自动执行以上命令。建立同步的过程很简单：</p>
+<h2 id="初始化版本库-amp-建立仓库关联（已与远程仓库关联的可忽略这一步）"><a href="#初始化版本库-amp-建立仓库关联（已与远程仓库关联的可忽略这一步）" class="headerlink" title="初始化版本库&amp;建立仓库关联（已与远程仓库关联的可忽略这一步）"></a>初始化版本库&amp;建立仓库关联（已与远程仓库关联的可忽略这一步）</h2><p>  一般根据 hexo 教程一步步建立起来的博客都没有跟自己的远程仓库建立关联，查看是否关联的方法是输入 git remote 看是否有关联的远程仓库：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd blog</span><br><span class="line">git remote</span><br><span class="line"><span class="comment">// origin</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到我这里有一个名叫 origin 的仓库与我本地的文件夹关联，如果当前还没有关联，先用 git init 命令将你的本地文件夹初始化成一个版本库，然后使用 git remote add origin 你的github仓库地址 命令来建立与远程仓库的关联，这里的 origin 是你定义的远程仓库在本地的名字，你也可以叫别的，一般命名成 origin，这样就建立好了关联了，使用刚刚的 git remote 命令检测会看到你关联的仓库。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br><span class="line"><span class="comment">// Initialized empty Git repository in ****/blog/.git/</span></span><br><span class="line">git remote add origin git@github.com:lulua87/lulua87.github.io.git</span><br><span class="line"></span><br><span class="line">git remote</span><br><span class="line"><span class="comment">// orgin</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="提交文件"><a href="#提交文件" class="headerlink" title="提交文件"></a>提交文件</h2><p>  像正常提交文件那样使用 git add 、 git commit 和 git push 命令提交文件，但这里在 push 的时候要注意新建一个分支去存你要提交的源文件，具体命令是 git push -u origin HEAD:分支名，这里的分支名自己取，HEAD 是版本库的头指针的意思，代表本地版本库里面的最新版本，origin 是刚刚你自己添加远程关联时候的名字，如果你的不是叫 origin 就写成自己定义的名字， -u 参数是为了建立本地分支与远程分支的关联，以后 push 的时候直接输入 git push 就可以了，所以这整个命令的意思就是：把本地最新版本的代码提交到远程仓库的某个分支上去，如果远程仓库还没有这个分支，就在远程仓库里新建一个分支，然后将它跟本地当前分支关联起来。提交之后你就会发现自己的 github 仓库多了一条分支，就是你刚刚提交的那个分支。   至于这里为什么不先在 github 上面手动建立分支，然后再在本地建立关联，是因为如果是远程手动建立分支会自动以 master 分支为模板建立一份一模一样的文件，而我们仓库里面 master 分支存的都是经过 hexo 编译的文件，跟源文件完全不一样，新建这样一个分支之后还要手动把里面的文件删掉，另一个原因是如果在远程手动建分支，你在本地还得手动用 git fetch origin 拉取远程分支的更新，然后再手动建立与分支的关联，比较麻烦，当然如果你是刚开始部署 hexo，github 仓库里面还一点东西都没有的话这些问题都不存在，那就随意。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">&#x27;submit sth&#x27;</span></span><br><span class="line">git push -u origin HEAD:rawblog</span><br></pre></td></tr></table></figure>
+
+<h2 id="设置默认分支"><a href="#设置默认分支" class="headerlink" title="设置默认分支"></a>设置默认分支</h2><p>  最后我们需要把你新建的那个分支设置成 github 的默认分支，这样做的原因是为了你以后在别的机器上拉取代码的时候能够直接拉取源文件，不用再指定分支。</p>
+<p>在这里选择好默认分支之后，update就行了。现在你就可以使用 github 来同步自己的 hexo 博客源文件啦~</p>
+<p>原文章结束－－－－－－－－－－－－</p>
+<h2 id="遇到的问题总结"><a href="#遇到的问题总结" class="headerlink" title="遇到的问题总结"></a>遇到的问题总结</h2><h4 id="Mac下配置多个SSH-Key"><a href="#Mac下配置多个SSH-Key" class="headerlink" title="Mac下配置多个SSH-Key"></a>Mac下配置多个SSH-Key</h4><p>附上：Mac下配置多个SSH-Key，为了同时在同一台电脑上使用ssh公钥和私钥进行公司日常工作和业余时间进行github代码上传。<br>因为在同一台电脑上，我们不能指望通过ssh-keygen生成的一对密钥对，既能访问github又能访问公司私有的gitlab。</p>
+<p>注意： 这里已经事先配好了用于公司工作提交的第一个ssh公钥和私钥。过程忽略～</p>
+<p>我们进行第二个ssh－key的创建注意事项：</p>
+<ol>
+<li>cd ~/.ssh</li>
+<li>ssh-keygen -t -rsa -C ‘你的github绑定的私人邮箱完整格式’ -f id_rsa_lulua87</li>
+<li>ssh -T <a href="mailto:&#103;&#x69;&#x74;&#64;&#103;&#105;&#116;&#104;&#117;&#98;&#x2e;&#99;&#111;&#x6d;">&#103;&#x69;&#x74;&#64;&#103;&#105;&#116;&#104;&#117;&#98;&#x2e;&#99;&#111;&#x6d;</a><br>出现如下信息，表明创建成功：<br>Hi lulua87/lulua87.github.io! You’ve successfully authenticated, but GitHub does not provide shell access.</li>
+<li>cat ~/.ssh/id_rsa_lulua87.pub | pbcopy<br>把为了github生成的公钥上到你的github的blog仓库对应的设置里的最后一项Deploy keys，点击 add Deploy keys 并复制；</li>
+<li>vi <del>/.ssh/config<br>然后在</del>/.ssh 目录下创建config文件，该文件用于配置私钥对应的服务器：</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># icode</span><br><span class="line">Host ****</span><br><span class="line">HostName **＊*</span><br><span class="line">User ＊＊工作邮箱＊＊</span><br><span class="line">PreferredAuthentications publickey</span><br><span class="line">IdentityFile ~<span class="regexp">/.ssh/i</span>d_rsa</span><br><span class="line"></span><br><span class="line"># github</span><br><span class="line">Host github.com</span><br><span class="line">HostName github.com</span><br><span class="line">User git</span><br><span class="line">PreferredAuthentications publickey</span><br><span class="line">IdentityFile ~<span class="regexp">/.ssh/i</span>d_rsa_lulua87</span><br></pre></td></tr></table></figure>
+
+<p>PS：编辑完成之后，在英文输入法下， 键入esc, :wq 保存并退出。</p>
+<p>当链接到公司内部上的仓库时，会使用id_ras验证远端的公钥是否匹配。而链接到github.com上的仓库时，则使用私钥id_ras_lulua87验证远端（github.com）的公钥(id_rsa_lulua87.pub)是否匹配。</p>
+<h4 id="hexo安装之后使用hexo指令命令行报错"><a href="#hexo安装之后使用hexo指令命令行报错" class="headerlink" title="hexo安装之后使用hexo指令命令行报错"></a>hexo安装之后使用hexo指令命令行报错</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123; [<span class="built_in">Error</span>: Cannot find <span class="built_in">module</span> <span class="string">&#x27;./build/Release/DTraceProviderBindings&#x27;</span>] code: <span class="string">&#x27;MODULE_NOT_FOUND&#x27;</span> &#125;  </span><br><span class="line">&#123; [<span class="built_in">Error</span>: Cannot find <span class="built_in">module</span> <span class="string">&#x27;./build/default/DTraceProviderBindings&#x27;</span>] code: <span class="string">&#x27;MODULE_NOT_FOUND&#x27;</span> &#125;  </span><br><span class="line">&#123; [<span class="built_in">Error</span>: Cannot find <span class="built_in">module</span> <span class="string">&#x27;./build/Debug/DTraceProviderBindings&#x27;</span>] code: <span class="string">&#x27;MODULE_NOT_FOUND&#x27;</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<p>解决办法on google<br>google之后发现被这个问题困扰的小伙伴还真不少，网上最靠谱的解决办法是：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo --no-optional</span><br></pre></td></tr></table></figure>
+
+<p>但在我的环境下方法无效：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall hexo</span><br><span class="line">npm install hexo --no-optional</span><br></pre></td></tr></table></figure>
+
+<p>可是依旧没有效果。<br>其实hexo暂时并没有用到dtrace-prodider，仅仅是报错而已，hexo的命令还是能执行，但对于强迫症来说，简直无法忍受。</p>
+<p>我的解决办法<br>重装hexo-cli:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm uninstall hexo-cli -g</span><br><span class="line">npm install hexo-cli -g</span><br></pre></td></tr></table></figure>
+
+<p>——————————————————————<br>2018-04-09补充<br>遇到的问题：<br>hexo本地测试运行重启后页面空白,提示 : WARN No layout: index.html?<br>解决：<br>我的情况是next目录下是空白的，重新克隆了next仓库（git clone <a target="_blank" rel="noopener" href="https://github.com/theme-next/hexo-theme-next">https://github.com/theme-next/hexo-theme-next</a> themes/next）），然后hexo generate; 之后就OK了。</p>
+<p>新换的电脑，想把远程库关联到本机</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">B0000000111581:lulua87.github.io gaolu04$ sudo ssh -T git@github.com</span><br><span class="line">The authenticity <span class="keyword">of</span> host <span class="string">&#x27;github.com (192.30.255.113)&#x27;</span> can<span class="string">&#x27;t be established.</span></span><br><span class="line"><span class="string">RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.</span></span><br><span class="line"><span class="string">Are you sure you want to continue connecting (yes/no)? yes</span></span><br><span class="line"><span class="string">Warning: Permanently added &#x27;</span>github.com,<span class="number">192.30</span><span class="number">.255</span><span class="number">.113</span><span class="string">&#x27; (RSA) to the list of known hosts.</span></span><br><span class="line"><span class="string">Permission denied (publickey).</span></span><br><span class="line"><span class="string">B0000000111581:lulua87.github.io gaolu04$ ssh-keygen -t rsa -C &quot;962605247@qq.com&quot;</span></span><br><span class="line"><span class="string">Generating public/private rsa key pair.</span></span><br><span class="line"><span class="string">Enter file in which to save the key (/Users/baidu/.ssh/id_rsa): </span></span><br><span class="line"><span class="string">/Users/baidu/.ssh/id_rsa already exists.</span></span><br><span class="line"><span class="string">Overwrite (y/n)? y</span></span><br><span class="line"><span class="string">Enter passphrase (empty for no passphrase): </span></span><br><span class="line"><span class="string">Enter same passphrase again: </span></span><br><span class="line"><span class="string">Your identification has been saved in /Users/baidu/.ssh/id_rsa.</span></span><br><span class="line"><span class="string">Your public key has been saved in /Users/baidu/.ssh/id_rsa.pub.</span></span><br><span class="line"><span class="string">The key fingerprint is:</span></span><br><span class="line"><span class="string">SHA256:uZNNz2Bytvk6eLOtmq35L6NUaDatHqNv794b7gj6gcM 962605247@qq.com</span></span><br><span class="line"><span class="string">The key&#x27;</span>s randomart image is:</span><br><span class="line">+---[RSA <span class="number">2048</span>]----+</span><br><span class="line">|                 |</span><br><span class="line">|                 |</span><br><span class="line">|                 |</span><br><span class="line">|         +       |</span><br><span class="line">|        S O      |</span><br><span class="line">|     . + &amp; *     |</span><br><span class="line">|      E @.+ +    |</span><br><span class="line">|       *oX** .   |</span><br><span class="line">|      o+XX@@O.   |</span><br><span class="line">+----[SHA256]-----+</span><br><span class="line">B0000000111581:lulua87.github.io gaolu04$ ls</span><br><span class="line">_config.yml	node_modules	public		source</span><br><span class="line">db.json		package.json	scaffolds	themes</span><br><span class="line">B0000000111581:lulua87.github.io gaolu04$ cat /Users/baidu/.ssh/id_rsa.pub</span><br><span class="line">ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDcOdd22TpIErmEoW6SiNbaOx7HpQDiG1D66ao95GBmhvSqtK7cQnwJemHJiPnMc2dyv8ZejvGIbzGuqY2fGnbgYeWX7UJXGCmqmzHJi<span class="comment">//5fPHpgHHnqZQA1tOqd93Z04ChmP5Pgp9ynBpVV2OxtUhF2Xo68gEHS23sTVa0bANTw95+3ltpvPfq+lGV6sHq+lHWJ+n3dDRjrlit7Ij1Rs09FjeVmhu1+wbHy2qQv1yBreCSVq+hoDCt2SrnpFABeHTaqFBr1e8z6lkXvV5n7WgZLSX5Twwldp7AkrLT3HU2Cj33NhIvgGm20Kp76N4WGV9Mqn3wgPkrhoWm5Yi5ONSJ 962605247@qq.com</span></span><br><span class="line">B0000000111581:lulua87.github.io gaolu04$</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/hexo/" rel="tag"># hexo</a>
+              <a href="/tags/github/" rel="tag"># github</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/03/06/css_class_naming/" rel="prev" title="CSS－－命名class">
+      <i class="fa fa-chevron-left"></i> CSS－－命名class
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/08/29/How-does-FE-implement-Mockup/" rel="next" title="前端如何实现视觉设计稿">
+      前端如何实现视觉设计稿 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E7%89%88%E6%9C%AC%E5%BA%93-amp-%E5%BB%BA%E7%AB%8B%E4%BB%93%E5%BA%93%E5%85%B3%E8%81%94%EF%BC%88%E5%B7%B2%E4%B8%8E%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E5%85%B3%E8%81%94%E7%9A%84%E5%8F%AF%E5%BF%BD%E7%95%A5%E8%BF%99%E4%B8%80%E6%AD%A5%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">初始化版本库&amp;建立仓库关联（已与远程仓库关联的可忽略这一步）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E4%BA%A4%E6%96%87%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">提交文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E9%BB%98%E8%AE%A4%E5%88%86%E6%94%AF"><span class="nav-number">3.</span> <span class="nav-text">设置默认分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">遇到的问题总结</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Mac%E4%B8%8B%E9%85%8D%E7%BD%AE%E5%A4%9A%E4%B8%AASSH-Key"><span class="nav-number">4.0.1.</span> <span class="nav-text">Mac下配置多个SSH-Key</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hexo%E5%AE%89%E8%A3%85%E4%B9%8B%E5%90%8E%E4%BD%BF%E7%94%A8hexo%E6%8C%87%E4%BB%A4%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%8A%A5%E9%94%99"><span class="nav-number">4.0.2.</span> <span class="nav-text">hexo安装之后使用hexo指令命令行报错</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Gao lu</p>
+  <div class="site-description" itemprop="description">时间就像一张网，你撒在哪里，你的收获就在哪里。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Gao lu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

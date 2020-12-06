@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="什么鬼，又不知道怎么命名class了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSS－－命名class">
+<meta property="og:url" content="http://example.com/2017/03/06/css_class_naming/index.html">
+<meta property="og:site_name" content="前端记录">
+<meta property="og:description" content="什么鬼，又不知道怎么命名class了">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-03-06T03:00:00.000Z">
+<meta property="article:modified_time" content="2020-12-06T03:54:00.000Z">
+<meta property="article:author" content="Gao lu">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="CSS命名">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2017/03/06/css_class_naming/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>CSS－－命名class | 前端记录</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">前端记录</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2017/03/06/css_class_naming/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Gao lu">
+      <meta itemprop="description" content="时间就像一张网，你撒在哪里，你的收获就在哪里。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="前端记录">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CSS－－命名class
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-03-06 11:00:00" itemprop="dateCreated datePublished" datetime="2017-03-06T11:00:00+08:00">2017-03-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-12-06 11:54:00" itemprop="dateModified" datetime="2020-12-06T11:54:00+08:00">2020-12-06</time>
+              </span>
+
+          
+            <div class="post-description">什么鬼，又不知道怎么命名class了</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><a target="_blank" rel="noopener" href="http://imweb.io/topic/5623c25734764b2c16769749">原文转自imweb社区：</a></p>
+<hr>
+<p>相信写css的人都会遇到下面的问题：<br>糟糕，怎么命名这个class，好像不太贴切，要是冲突了怎么办，要不要设计成通用一点…<br>而改别人css代码的时候则会一直有个疑问：这个class到底是只在这个地方用了，还是其他地方都用了？<br>于是就有了下面的做法：<br>最后终于被逼出了个class，简洁也好，中英混搭也罢，看着一头雾水也没关系，反正最后页面显示出来的。<br>这个class应该是只有这个地方用到，我可以放心写。上线之后。如果没问题，则暗自自我欣赏，看吧问题就这么简单，分分钟搞定呀；如果冲突了，则无限感慨，哎，改的时候我就隐隐不安啊，妈蛋，深坑，这是谁写的，谁写的！！！<br>不好，这个class说不定其他地方也用到了，我得加个限制范围，加个父元素？要不重新再命名个class吧，比较保险。最后如果没问题则表示还好比较机智，怎么说哥也是混过的，还是有几斤几两的；如果有问题则表示防不慎防啊，这也太太太坑了吧。<br>由此可见，class的命名真不是一件简单的事，尤其还要兼顾可辨别性与可读性。</p>
+<h2 id="class命名到底有多难"><a href="#class命名到底有多难" class="headerlink" title="class命名到底有多难"></a>class命名到底有多难</h2><p>第一，class跟id不一样，class本来就是设计用来可以重复利用的，而id才是设计唯一的（如果遵循BEM，class几乎也都是唯一的了）。<br>第二，样式是可以覆盖的，而且先按照权重，再按照定义的先后顺序。也许你花了十分钟设计定义的一个class样式，人家分分钟就给你干掉了，这得多恼火；也许这个页面好好的，跑到另一个页面就跟原先的样式有了冲突。<br>所以class命名的难就难在既要重复利用，又要避免样式的冲突。如果要重复利用，那么当然是越简单越好，越抽象可用的地方越大，太具体了就完蛋了。而如果要避免样式冲突。BEM的方式最简单，class都唯一了，那还冲突个毛线；其次就是通过父元素限定作用域，可以搞几个层级，而不是单独一个class定义样式；还有就是追加class，来实现差异化；最后不同的页面不同的文件，你用你的我用我的。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// BEM</span></span><br><span class="line">.imgslide__item__img&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 父元素限定</span></span><br><span class="line">.imgslide .item .img&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 追加class</span></span><br><span class="line">.img&#123;&#125;</span><br><span class="line">.img--special&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 不同页面不同文件</span></span><br><span class="line"><span class="comment">// a.html &amp; a.css</span></span><br><span class="line">.img&#123;&#125;</span><br><span class="line"><span class="comment">// b.html &amp; b.css</span></span><br><span class="line">.img&#123;&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="class命名的发展历程"><a href="#class命名的发展历程" class="headerlink" title="class命名的发展历程"></a>class命名的发展历程</h2><p>关于class的命名，其实跟人名也差不多，如果要想别人看得懂，那关键还是在于可识别性。到目前为止class的命名大概经历了下面几个重要阶段：</p>
+<ol>
+<li>混沌阶段，没有规则就是最好的规则</li>
+<li>原子类阶段，聚集神龙现身手</li>
+<li>模块阶段，以职能划分，添加前缀</li>
+<li>BEM阶段，规则有序</li>
+</ol>
+<h3 id="混沌阶段"><a href="#混沌阶段" class="headerlink" title="混沌阶段"></a>混沌阶段</h3><p>这个没什么好说的，刚开始学html的都是这样，名字先简单的来，不够再添加1，2，3什么后缀，或者中英混搭等等，如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">h1.title</span><br><span class="line">h2.title2</span><br><span class="line">h2.title2-<span class="number">1</span></span><br><span class="line">h2.title2-<span class="number">2</span></span><br><span class="line">div.hd</span><br><span class="line">div.hd-s</span><br><span class="line">div.hd2</span><br><span class="line">div.hd-xiangxi</span><br></pre></td></tr></table></figure>
+
+<p>一个字，太乱。完全无章程，规律可循，想怎么写就怎么写，写到哪里是哪里。看class去猜意思很可能就是错误的，如.red{color:red;font-size:14px;}，明明说好的红色，却顺带定义了个字体大小。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/CSS/" rel="tag"># CSS</a>
+              <a href="/tags/CSS%E5%91%BD%E5%90%8D/" rel="tag"># CSS命名</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/05/09/some-css3-practice-questions/" rel="prev" title="一些实用的CSS3问题及解决">
+      <i class="fa fa-chevron-left"></i> 一些实用的CSS3问题及解决
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/03/06/hexo_blog_for_github_branch_auto_update/" rel="next" title="hexo 博客利用 github 分支同步源文件">
+      hexo 博客利用 github 分支同步源文件 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#class%E5%91%BD%E5%90%8D%E5%88%B0%E5%BA%95%E6%9C%89%E5%A4%9A%E9%9A%BE"><span class="nav-number">1.</span> <span class="nav-text">class命名到底有多难</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#class%E5%91%BD%E5%90%8D%E7%9A%84%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">class命名的发展历程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%B7%E6%B2%8C%E9%98%B6%E6%AE%B5"><span class="nav-number">2.1.</span> <span class="nav-text">混沌阶段</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Gao lu</p>
+  <div class="site-description" itemprop="description">时间就像一张网，你撒在哪里，你的收获就在哪里。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Gao lu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
